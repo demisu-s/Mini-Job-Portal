@@ -1,137 +1,120 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
+import ProfileCard from './ProfileCard';
 
-// Base styles for the component
 const searchContainerStyle = {
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
-  justifyContent: "center",
-  height: "50vh",
-  textAlign: "center",
-};
-
-const profileCardStyle = {
-  backgroundColor: "#f0f0f0",
-  padding: "10px",
-  maxWidth: "600px",
-  borderRadius: "5px",
-  border: "1px solid #ccc",
-  marginBottom: "10px",
+  display: 'flex',
+ 
+  flexDirection: 'column',
+  alignItems: 'center',
+  justifyContent: 'center',
+  
+  height: '50vh',
+  textAlign: 'center',
 };
 
 const searchBoxContainerStyle = {
-  display: "flex",
-  alignItems: "center",
-  marginBottom: "10px",
-};
-
-const skillsStyle = {
-  backgroundColor: "#333",
-  color: "white",
-  borderRadius: "5px",
-  padding: "5px 10px",
-  margin: "5px",
+  display: 'flex',
+  // alignItems: 'center',
+  // justifyContent: 'center',
+  marginBottom: '10px',
+  marginTop:"80px",
+  marginLeft:'100px'
+  
 };
 
 const searchBoxStyle = {
-  flex: "1",
-  padding: "10px",
-  fontSize: "14px",
-  border: "1px solid #ccc",
-  borderRadius: "5px",
-  marginRight: "10px",
+  flex: '1',
+  padding: '10px',
+  fontSize: '14px',
+  border: '1px solid #ccc',
+  borderRadius: '5px',
+  marginRight: '10px',
 };
 
 const buttonStyle = {
-  padding: "10px 20px",
-  borderRadius: "5px",
-  cursor: "pointer",
-  marginRight: "10px",
+  padding: '10px 20px',
+  borderRadius: '5px',
+  cursor: 'pointer',
+  marginRight: '10px',
 };
 
 const searchButtonStyle = {
   ...buttonStyle,
-  backgroundColor: "#525252",
-  color: "white",
-  border: "none",
+  backgroundColor: '#525252',
+  color: 'white',
+  border: 'none',
 };
 
 const listAllButtonStyle = {
   ...buttonStyle,
-  backgroundColor: "#525252",
-  color: "white",
-  border: "none",
+  backgroundColor: '#525252',
+  color: 'white',
+  border: 'none',
 };
 
-function CandidateList() {
-  const [searchText, setSearchText] = useState("");
-  const [filteredCandidates, setFilteredCandidates] = useState("");
-  const [candidates, setCandidates] = useState([]);
+const cardStyle = {
+  backgroundColor: '#f0f0f0',
+  padding: '10px',
+  maxWidth: '300px', // Adjust the maximum width
+  borderRadius: '5px',
+  border: '1px solid #ccc',
+  marginBottom: '20px', // Increase the bottom margin
+};
+
+function CandidateList({ candidates }) {
+  const [searchText, setSearchText] = useState('');
+  const [filteredCandidates, setFilteredCandidates] = useState([]);
 
   useEffect(() => {
-    const storedCandidates = localStorage.getItem("candidates");
-    if (storedCandidates) {
-      // Hint: Implement this
-    }
-  }, []);
+    setFilteredCandidates(candidates);
+  }, [candidates]);
 
   const handleSearch = () => {
-    // Hint: Implement this
+    const filtered = candidates.filter((candidate) =>
+      candidate.skills.some((skill) =>
+        skill.toLowerCase().includes(searchText.toLowerCase())
+      )
+    );
+    setFilteredCandidates(filtered);
   };
 
   const handleListAll = () => {
-    // Hint: Implement this
+    setFilteredCandidates(candidates);
   };
 
   return (
-    <div style={{ ...searchContainerStyle, alignItems: "center" }}>
+    <div style={{ ...searchContainerStyle, alignItems: 'center' }}>
       <div style={searchBoxContainerStyle}>
         <input
           type="text"
-          placeholder="search skills"
-          value=""
+          placeholder="Search skills"
+          value={searchText}
           style={searchBoxStyle}
-          //Hint: Implement this
+          onChange={(e) => setSearchText(e.target.value)}
         />
-        <button style={searchButtonStyle}>Search Button</button>
-        <button data-testid="candidate-card" style={listAllButtonStyle}>
+        <button style={searchButtonStyle} onClick={handleSearch}>
+          Search Button
+        </button>
+        <button style={listAllButtonStyle} onClick={handleListAll}>
           List All
         </button>
       </div>
       {filteredCandidates.length === 0 ? (
-        // Implement this
-        console.log()
+        <p>No candidates found.</p>
       ) : (
-        // Fix and Implement this
-
-        {/* <div
+        <div
           style={{
-            display: "flex",
-            flexWrap: "wrap",
-            justifyContent: "flex-start",
+            display: 'flex',
+            flexWrap: 'wrap',
+            flexDirection: 'row',
+            justifyContent: 'flex-start',
+            gap: '10px',
           }}
         >
-          <div
-            key={candidate.id}
-            style={{
-              ...profileCardStyle,
-              textAlign: "left",
-              marginRight: "10px",
-            }}
-          >
-            <h2 style={{ marginBottom: "10px" }}>Role: {candidate.role}</h2>
-            <p>Name: {candidate.name}</p>
-            <p>Email: {candidate.email}</p>
-            <div>
-              <p style={{ fontWeight: "bold" }}>Skills</p>
-              <div style={{ display: "flex", flexWrap: "wrap" }}>
-                <div key={index} style={skillsStyle}>
-                   // Hint: Implement this
-                </div>
-              </div>
-            </div>
-          </div>
-        </div> */}
+          {filteredCandidates.map((candidate) => (
+            <ProfileCard key={candidate.name} candidate={candidate} style={cardStyle} />
+          ))}
+        </div>
       )}
     </div>
   );

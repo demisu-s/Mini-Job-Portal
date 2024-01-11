@@ -6,19 +6,31 @@ const navbarStyle = {
   justifyContent: "space-between",
   alignItems: "center",
   padding: "10px",
-  backgroundColor:"#5a1151"
+  backgroundColor:"#484848",
+ 
 };
 
 const linkStyle = {
   textDecoration: "none",
   color: "#fff",
-  backgroundColor: "#5a1151",
+  backgroundColor: "#484848",
   padding: "10px 20px",
   borderRadius: "5px",
   cursor: "pointer",
   marginRight: "40px",
   
 };
+const linkItStyle={
+  display:"flex",
+  textDecoration:"none",
+  color:"red",
+  backgroundColor:"#fff",
+  padding:"10px 30px 40px 10px",
+  borderRadius:"5px",
+  marginLeft:"30px",
+  marginRight:"60px",
+  cursor:"pointer"
+}
 
 const centerHeadingStyle = {
   marginLeft: "625px",
