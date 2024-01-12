@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const homeStyle = {
   display: "flex",
@@ -28,14 +28,23 @@ const buttonStyle = {
 };
 
 function Home() {
+  const navigate = useNavigate();
+
+  const handleRegisterClick = () => {
+    navigate("/candidate/registration");
+  };
+
+  const handleListClick = () => {
+    navigate("/candidate/list");
+  };
+
   return (
     <div data-testid="home-component" style={homeStyle}>
       <div style={buttonContainerStyle}>
-        {/* Hint: Implement this */}
-        <button data-testid="register-button" style={buttonStyle}>
+        <button data-testid="register-button" style={buttonStyle} onClick={handleRegisterClick}>
           Register Candidate
         </button>
-        <button data-testid="list-button" style={buttonStyle}>
+        <button data-testid="list-button" style={buttonStyle} onClick={handleListClick}>
           List Candidates
         </button>
       </div>

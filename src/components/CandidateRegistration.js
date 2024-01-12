@@ -1,4 +1,3 @@
-// CandidateRegistration.js
 import React, { useState, useEffect } from "react";
 
 const centerContainerStyle = {
@@ -63,7 +62,7 @@ const buttonGroupStyle = {
   marginTop: "10px",
 };
 
-function CandidateRegistration({ handleRegistration, candidates }) {
+function CandidateRegistration({ handleRegistration }) {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -72,21 +71,27 @@ function CandidateRegistration({ handleRegistration, candidates }) {
     skills: [],
   });
 
+  const [candidates, setCandidates] = useState([]);
   const [emailError, setEmailError] = useState("");
+  const [formMessage, setFormMessage] = useState("");
 
   useEffect(() => {
     const storedCandidates = localStorage.getItem("candidates");
     if (storedCandidates) {
-      handleRegistration(JSON.parse(storedCandidates));
+      setCandidates(JSON.parse(storedCandidates));
     }
-  }, [handleRegistration]);
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("candidates", JSON.stringify(candidates));
+  }, [candidates]);
 
   const handleSkillChange = (e) => {
     setFormData({ ...formData, skill: e.target.value });
   };
 
   const isEmailExist = (email) => {
-    return candidates && candidates.some((candidate) => candidate.email === email);
+    return candidates && candidates.some((candidate) => candidate.email.toLowerCase() === email.toLowerCase());
   };
 
   const handleAddSkill = () => {
@@ -104,6 +109,7 @@ function CandidateRegistration({ handleRegistration, candidates }) {
 
     if (isEmailExist(formData.email)) {
       setEmailError("Email already exists. Please use a different email.");
+      setFormMessage("");
       return;
     }
 
@@ -117,11 +123,13 @@ function CandidateRegistration({ handleRegistration, candidates }) {
       skills: formData.skills,
     };
 
-    handleRegistration([...(candidates || []), newCandidate]);
+    handleRegistration(newCandidate);
 
-    localStorage.setItem("candidates", JSON.stringify([...(candidates || []), newCandidate]));
+    setCandidates([...candidates, newCandidate]);
 
     setFormData({ name: "", email: "", role: "", skill: "", skills: [] });
+
+    setFormMessage("Registration successful!");
   };
 
   return (
@@ -150,7 +158,7 @@ function CandidateRegistration({ handleRegistration, candidates }) {
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
               />
-              {emailError && <p style={{ color: "red" }}>{emailError}</p>}
+              {emailError && <p style={{ color: "red", marginBottom: "10px" }}>{emailError}</p>}
             </div>
             <div className="form-group" style={formGroupStyle}>
               <input
@@ -199,12 +207,12 @@ function CandidateRegistration({ handleRegistration, candidates }) {
               </button>
               <button
                 data-testid="reset-btn"
-                type="reset"
                 style={sharpEdgeButtonStyle}
               >
                 Reset
               </button>
             </div>
+            {formMessage && <p style={{ marginTop: "10px", color: "green" }}>{formMessage}</p>}
           </form>
         </div>
       </div>
