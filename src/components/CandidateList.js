@@ -3,23 +3,18 @@ import ProfileCard from './ProfileCard';
 
 const searchContainerStyle = {
   display: 'flex',
- 
   flexDirection: 'column',
   alignItems: 'center',
   justifyContent: 'center',
-  
   height: '50vh',
   textAlign: 'center',
 };
 
 const searchBoxContainerStyle = {
   display: 'flex',
-  // alignItems: 'center',
-  // justifyContent: 'center',
   marginBottom: '10px',
-  marginTop:"80px",
-  marginLeft:'100px'
-  
+  marginTop: '80px',
+  marginLeft: '100px',
 };
 
 const searchBoxStyle = {
@@ -55,10 +50,10 @@ const listAllButtonStyle = {
 const cardStyle = {
   backgroundColor: '#f0f0f0',
   padding: '10px',
-  maxWidth: '300px', // Adjust the maximum width
+  maxWidth: '300px',
   borderRadius: '5px',
   border: '1px solid #ccc',
-  marginBottom: '20px', // Increase the bottom margin
+  marginBottom: '20px',
 };
 
 function CandidateList({ candidates }) {
@@ -71,9 +66,7 @@ function CandidateList({ candidates }) {
 
   const handleSearch = () => {
     const filtered = candidates.filter((candidate) =>
-      candidate.skills.some((skill) =>
-        skill.toLowerCase().includes(searchText.toLowerCase())
-      )
+      candidate.name.toLowerCase().includes(searchText.toLowerCase())
     );
     setFilteredCandidates(filtered);
   };
@@ -87,7 +80,7 @@ function CandidateList({ candidates }) {
       <div style={searchBoxContainerStyle}>
         <input
           type="text"
-          placeholder="Search skills"
+          placeholder="Search by name"
           value={searchText}
           style={searchBoxStyle}
           onChange={(e) => setSearchText(e.target.value)}
